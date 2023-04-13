@@ -32,6 +32,13 @@
                                 @endif
                             </div>
                             <div class="form-group mb-3">
+                                <input type="phone" placeholder="Phone number" id="phone" class="form-control"
+                                    name="phone" required>
+                                @if ($errors->has('phone'))
+                                <span class="text-danger">{{ $errors->first('phone') }}</span>
+                                @endif
+                            </div>
+                            <div class="form-group mb-3">
                                 <div class="checkbox">
                                     <label><input type="checkbox" name="remember"> Remember Me</label>
                                 </div>
