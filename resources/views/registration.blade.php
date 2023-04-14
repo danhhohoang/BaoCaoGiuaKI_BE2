@@ -39,6 +39,13 @@
                                 @endif
                             </div>
                             <div class="form-group mb-3">
+                                <input type="file" id="image" class="form-control" name="image" required>
+                                @if ($errors->has('image'))
+                                <span class="text-danger">{{ $errors->first('image') }}</span>
+                                @endif
+                            </div>
+
+                            <div class="form-group mb-3">
                                 <div class="checkbox">
                                     <label><input type="checkbox" name="remember"> Remember Me</label>
                                 </div>
