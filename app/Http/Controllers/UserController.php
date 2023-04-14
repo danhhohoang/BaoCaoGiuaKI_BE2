@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
 class UserController extends Controller
 {
     public function index()
@@ -29,17 +28,23 @@ class UserController extends Controller
     }
       
     public function customRegistration(Request $request)
-    {  
+    {  $data = new User();
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'phone' => ['nullable','string','min:10'],
         ]);
-           
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $ext = $file->getClientOriginalExtension();
+            $filename = time().'.'.$ext;
+            $file->move('assets/uploads/',$filename);
+            $data->image = $filename;
+        }
         $data = $request->all();
         $check = $this->create($data);
-         $check->save();
+        $check->save();
         return redirect("dashboard")->withSuccess('You have signed-in');
     }
     public function create(array $data)
@@ -49,6 +54,7 @@ class UserController extends Controller
         'email' => $data['email'],
         'password' => Hash::make($data['password']),
         'phone' => $data['phone'],
+        'image' => $data['image'],
       ]);
     } 
     public function dashboard()
