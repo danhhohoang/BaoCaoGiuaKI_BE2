@@ -19,6 +19,11 @@ class UserController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
+        $credentials = $request->only('email', 'password');
+        if (Auth::attempt($credentials)) {
+            return redirect()->intended('dashboard')
+                        ->withSuccess('Signed in');
+        }
 
         return redirect("login")->withSuccess('Login details are not valid');
     }
@@ -64,5 +69,8 @@ class UserController extends Controller
         }
   
         return redirect("login")->withSuccess('You are not allowed to access');
+    }
+    public function signOut() {
+       
     }
 }
