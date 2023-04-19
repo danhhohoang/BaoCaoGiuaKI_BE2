@@ -74,7 +74,7 @@ class UserController extends Controller
             return view('listuser', compact('user'));
         }
 
-        return redirect("login")->withSuccess('You are not allowed to access');
+        return redirect('login')->withSuccess('You are not allowed to access');
     }
 
     public function delete($id)
@@ -85,7 +85,7 @@ class UserController extends Controller
             File::delete($path);
         }
         $user->delete();
-        return redirect('login', compact('user'));
+        return redirect('login');
     }
     public function signOut()
     {
