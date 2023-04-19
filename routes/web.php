@@ -19,5 +19,6 @@ Route::get('dashboard', [userController::class, 'dashboard']);
 Route::get('login', [userController::class, 'index'])->name('login');
 Route::post('custom-login', [userController::class, 'customLogin'])->name('login.custom');
 Route::get('registration', [userController::class, 'registration'])->name('register-user');
+Route::get('delete/{id}', [userController::class, 'delete']);
 Route::post('custom-registration', [userController::class, 'customRegistration'])->name('register.custom');
 Route::get('signOut', [userController::class, 'signOut'])->name('signOut');

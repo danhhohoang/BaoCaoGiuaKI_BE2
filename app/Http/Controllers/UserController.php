@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Session;
+use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+
 
 class UserController extends Controller
 {
@@ -34,7 +36,7 @@ class UserController extends Controller
     }
 
     public function customRegistration(Request $request)
-    {  
+    {
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -48,6 +50,7 @@ class UserController extends Controller
             $file->move('assets/uploads/',$filename);
             
         }
+
         $data = $request->all();
         $data['image'] = $filename;
         $check = $this->create($data);
@@ -68,12 +71,24 @@ class UserController extends Controller
     {
         if (Auth::check()) {
             $user = User::all();
-            return view('listuser',compact('user'));
+            return view('listuser', compact('user'));
         }
 
         return redirect("login")->withSuccess('You are not allowed to access');
     }
-    public function signOut() {
+
+    public function delete($id)
+    {
+        $user = User::find($id);
+        $path = 'assets/uploads/'. $user->image;
+        if(File::exists($path)){
+            File::delete($path);
+        }
+        $user->delete();
+        return redirect('login', compact('user'));
+    }
+    public function signOut()
+    {
         Session::flush();
         Auth::logout();
         return Redirect('login');
