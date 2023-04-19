@@ -45,10 +45,9 @@ class UserController extends Controller
             $file = $request->file('image');
             $ext = $file->getClientOriginalExtension();
             $filename = time().'.'.$ext;
-            $file->move('assets/uploads/',$filename);
-            
+            $file->move('assets/uploads/',$filename);            
         }
-        
+
         $data = $request->all();
         $data['image'] = $filename;
         $check = $this->create($data);
