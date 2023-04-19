@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomAuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 /*
@@ -14,7 +15,9 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('dashboard', [userController::class, 'dashboard']);
+// Route::get('listuser', [userController::class, 'list']);
 Route::get('login', [userController::class, 'index'])->name('login');
 Route::post('custom-login', [userController::class, 'customLogin'])->name('login.custom');
 Route::get('registration', [userController::class, 'registration'])->name('register-user');
 Route::post('custom-registration', [userController::class, 'customRegistration'])->name('register.custom');
+Route::get('signOut', [userController::class, 'signOut'])->name('signOut');
