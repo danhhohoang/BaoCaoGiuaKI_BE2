@@ -33,7 +33,7 @@ class UserController extends Controller
     }
       
     public function customRegistration(Request $request)
-    {  $data = new User();
+    {  
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -45,9 +45,10 @@ class UserController extends Controller
             $ext = $file->getClientOriginalExtension();
             $filename = time().'.'.$ext;
             $file->move('assets/uploads/',$filename);
-            $data->image = $filename;
+            $data['image'] = $filename;
         }
         $data = $request->all();
+        
         $check = $this->create($data);
         $check->save();
         return redirect("dashboard")->withSuccess('You have signed-in');
