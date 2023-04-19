@@ -33,6 +33,7 @@
         </div>
     </nav>
     @yield('content')
+    @yield('listuser')
 </body>
 
 </html>
