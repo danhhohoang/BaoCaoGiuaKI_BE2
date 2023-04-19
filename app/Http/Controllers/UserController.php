@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Session;
+use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,17 +46,17 @@ class UserController extends Controller
             $ext = $file->getClientOriginalExtension();
             $filename = time().'.'.$ext;
             $file->move('assets/uploads/',$filename);
-            $data['image'] = $filename;
+            
         }
+        
         $data = $request->all();
+        $data['image'] = $filename;
         $check = $this->create($data);
         $check->save();
         return redirect("dashboard")->withSuccess('You have signed-in');
     }
     public function create(array $data)
     {
-
-        
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
