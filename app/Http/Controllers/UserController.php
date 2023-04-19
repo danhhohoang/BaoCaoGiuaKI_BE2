@@ -40,10 +40,9 @@ class UserController extends Controller
             $ext = $file->getClientOriginalExtension();
             $filename = time().'.'.$ext;
             $file->move('assets/uploads/',$filename);
-            $data['image'] = $filename;
         }
         $data = $request->all();
-        
+        $data['image'] = $filename;
         $check = $this->create($data);
         $check->save();
         return redirect("dashboard")->withSuccess('You have signed-in');
