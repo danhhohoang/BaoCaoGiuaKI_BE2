@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+
 
 class UserController extends Controller
 {
@@ -47,7 +49,6 @@ class UserController extends Controller
             $ext = $file->getClientOriginalExtension();
             $filename = time() . '.' . $ext;
             $file->move('assets/uploads/', $filename);
-
         }
 
         $data = $request->all();
@@ -72,7 +73,6 @@ class UserController extends Controller
             $user = DB::table('users')->orderBy('id','desc')->paginate(3);
             return view('listuser', compact('user'));
         }
-
         return redirect('login')->withSuccess('You are not allowed to access');
     }
 
@@ -119,5 +119,11 @@ class UserController extends Controller
         // dd($user);
         $user->update();
         return redirect('dashboard')->with('message','Edit Account Successful !');
+    }
+    public function signOut()
+    {
+        Session::flush();
+        Auth::logout();
+        return Redirect('login');
     }
 }

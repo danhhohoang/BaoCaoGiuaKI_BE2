@@ -24,4 +24,4 @@ Route::get('delete/{id}', [userController::class, 'delete']);
 Route::get('edit-user/{id}', [userController::class, 'editlayout']);
 Route::post('edit/{id}', [userController::class, 'edit']);
 Route::post('custom-registration', [userController::class, 'customRegistration'])->name('register.custom');
-Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
+Route::get('signOut', [userController::class, 'signOut'])->name('signOut');
