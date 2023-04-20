@@ -34,6 +34,8 @@
     </nav>
     @yield('content')
     @yield('listuser')
+    @yield('profile')
+    @yield('profile-edit')
 </body>
 
 </html>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
@@ -46,9 +47,8 @@ class UserController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $ext = $file->getClientOriginalExtension();
-            $filename = time().'.'.$ext;
-            $file->move('assets/uploads/',$filename);
-            
+            $filename = time() . '.' . $ext;
+            $file->move('assets/uploads/', $filename);
         }
 
         $data = $request->all();
@@ -64,28 +64,61 @@ class UserController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'phone' => $data['phone'],
-            'image' => $data['image']
+            'image' => $data['image'],
         ]);
     }
     public function dashboard()
     {
         if (Auth::check()) {
-            $user = User::all();
+            $user = DB::table('users')->orderBy('id','desc')->paginate(3);
             return view('listuser', compact('user'));
         }
-
         return redirect('login')->withSuccess('You are not allowed to access');
     }
 
     public function delete($id)
     {
         $user = User::find($id);
-        $path = 'assets/uploads/'. $user->image;
-        if(File::exists($path)){
+        $path = 'assets/uploads/' . $user->image;
+        if (File::exists($path)) {
             File::delete($path);
         }
         $user->delete();
-        return redirect('login');
+        return redirect('dashboard');
+    }
+
+    public function profile($id)
+    {
+        $user = User::findOrFail($id);
+        return view('profile', compact('user'));
+    }
+
+    public function editlayout($id){
+        $user = User::findOrFail($id);
+        return view('profile-edit', compact('user'));
+    }
+
+    public function edit($id, Request $request)
+    {
+        $user = User::findOrFail($id);
+        if ($request->hasFile('image')) {
+            $path = 'assets/uploads/' . $user->image;
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+            $file = $request->file('image');
+            $ext = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $ext;
+            $file->move('assets/uploads/', $filename);
+            $user->image = $filename;
+        }
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        // $user->password = $request->input('password');
+        $user->phone = $request->input('phone');
+        // dd($user);
+        $user->update();
+        return redirect('dashboard')->with('message','Edit Account Successful !');
     }
     public function signOut()
     {
