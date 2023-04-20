@@ -120,11 +120,4 @@ class UserController extends Controller
         $user->update();
         return redirect('dashboard')->with('message','Edit Account Successful !');
     }
-
-    public function signOut()
-    {
-        Auth::logout();
-        return redirect('dashboard');
-
-    }
 }
